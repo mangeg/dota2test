@@ -1,19 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
-
-// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-
-namespace Dota2.WebApp.Controllers
+﻿namespace Dota2.WebApp.Controllers
 {
+    using Microsoft.AspNet.Mvc;
+    using Microsoft.Framework.OptionsModel;
+    using SteamService;
+
     public class HomeController : Controller
     {
+        private readonly IDotaService _dotaService;
+        public HomeController( IDotaService dotaService )
+        {
+            _dotaService = dotaService;
+        }
+
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View();
+            var heroes = _dotaService.GetHeroes();
+            return View( heroes );
         }
     }
 }

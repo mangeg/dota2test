@@ -1,14 +1,35 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/css/bootstrap-theme.css" rel="stylesheet" />
 </head>
 <body>
-    Hello!
+    <h1>Hello World!</h1>
+    <button type="button" class="btn btn-default">Button 1</button>
+    <button type="button" class="btn btn-danger">Button 2</button>
+    <button type="button" class="btn btn-sm btn-success">Button 3</button>
+    <button type="button" class="btn btn-xs btn-primary">Button 4</button>
+    <span class="badge">Hello In Badge</span>
+    <div class="btn-group">
+        <button type="button" class="btn btn-default" aria-label="Left Align">
+            <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="btn btn-default" aria-label="Center Align">
+            <span class="glyphicon glyphicon-align-center" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="btn btn-default" aria-label="Right Align">
+            <span class="glyphicon glyphicon-align-right" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="btn btn-default" aria-label="Justify Align">
+            <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
+        </button>
+    </div>
     @RenderBody()
-    <environment names="Development">
-    </environment>
-    <environment names="Staging,Production">
-    </environment>
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.js"></script>
     @RenderSection( "scripts", false )
 </body>
 </html>

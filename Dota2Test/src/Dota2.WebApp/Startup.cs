@@ -7,6 +7,7 @@
     using Microsoft.Framework.ConfigurationModel;
     using Microsoft.Framework.DependencyInjection;
     using Microsoft.Framework.Logging;
+    using SteamService;
 
     public class Startup
     {
@@ -16,18 +17,25 @@
                 .AddJsonFile( "config.json" )
                 .AddJsonFile( $"config.{env.EnvironmentName}.json", optional: true );
 
-            configuration.AddEnvironmentVariables();
+            if ( env.IsEnvironment( "Development" ) )
+            {
+                configuration.AddUserSecrets();
+            }
 
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; set; }
 
-        // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices( IServiceCollection services )
         {
             services.AddMvc();
+            services.Configure<SiteOptions>( Configuration.GetSubKey( "AppSettings" ) );
+            services.Configure<SteamServiceOptions>( Configuration.GetSubKey( "AppSettings" ) );
+            services.AddSingleton( s => Configuration );
+            services.AddTransient<IDotaService, DotaService>();
         }
+
         public void Configure( IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerfactory )
         {
             loggerfactory.AddConsole( LogLevel.Verbose );
@@ -42,6 +50,8 @@
             {
                 app.UseErrorHandler( "/Home/Error" );
             }
+
+            app.UseStaticFiles();
 
             app.UseMvc(
                 routes =>

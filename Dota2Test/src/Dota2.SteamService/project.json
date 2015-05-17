@@ -1,0 +1,19 @@
+{
+    "version": "1.0.0-*",
+    "description": "Access service to Steam APIs",
+    "authors": [ "MangeG" ],
+    "tags": [ "" ],
+    "projectUrl": "",
+    "licenseUrl": "",
+
+    "dependencies": {
+        "Microsoft.Framework.OptionsModel": "1.0.0-beta4",
+        "Microsoft.Net.Http": "2.2.29",
+        "Microsoft.AspNet.WebApi.Client": "5.2.3",
+        "Newtonsoft.Json": "6.0.8"        
+    },
+
+    "frameworks": {
+        "dnx451": { }
+    }
+}
