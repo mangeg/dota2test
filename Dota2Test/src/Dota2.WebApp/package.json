@@ -1,0 +1,9 @@
+{
+    "name": "Dota2.WebApp",
+    "version": "1.0.0",
+    "private": true,
+    "devDependencies": {
+        "gulp": "^3.8.11",
+        "rimraf": "^2.3.3"
+    }
+}
