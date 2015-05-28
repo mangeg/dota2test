@@ -1,4 +1,9 @@
 ﻿{
-    "AppSettings": {        
+    "AppSettings": {
+    },
+    "Data": {
+        "DefaultConnection": {
+            ConnectionString: "Server=(localdb)\\mssqllocaldb;Database=Dota2Db;Trusted_Connection=True;MultipleActiveResultSets=true"
+        }
     }
 }

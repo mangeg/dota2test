@@ -14,12 +14,14 @@
         "Microsoft.Framework.ConfigurationModel.Json": "1.0.0-beta4",
         "Microsoft.Framework.ConfigurationModel.UserSecrets": "1.0.0-beta4",
         "Microsoft.Framework.Logging.Console": "1.0.0-beta4",
-        "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-beta4",        
-        "Dota2.SteamService": "1.0.0-*"
+        "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-beta4",
+        "Dota2.SteamService": "",
+        "EntityFramework": "7.0.0-beta4",
     },
 
     "commands": {
-        "web": "Microsoft.AspNet.Hosting --server Microsoft.AspNet.Server.WebListener --server.urls http://localhost:5000"
+        "web": "Microsoft.AspNet.Hosting --server Microsoft.AspNet.Server.WebListener --server.urls http://localhost:5000",
+        "ef": "EntityFramework.Commands"
     },
 
     "frameworks": {

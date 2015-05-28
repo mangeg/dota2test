@@ -4,9 +4,11 @@
     using Microsoft.AspNet.Diagnostics;
     using Microsoft.AspNet.Diagnostics.Entity;
     using Microsoft.AspNet.Hosting;
+    using Microsoft.Data.Entity;
     using Microsoft.Framework.ConfigurationModel;
     using Microsoft.Framework.DependencyInjection;
     using Microsoft.Framework.Logging;
+    using Model;
     using SteamService;
 
     public class Startup
@@ -15,7 +17,7 @@
         {
             var configuration = new Configuration()
                 .AddJsonFile( "config.json" )
-                .AddJsonFile( $"config.{env.EnvironmentName}.json", optional: true );
+                .AddJsonFile( $"config.{env.EnvironmentName}.json", true );
 
             if ( env.IsEnvironment( "Development" ) )
             {
@@ -24,9 +26,7 @@
 
             Configuration = configuration;
         }
-
         public IConfiguration Configuration { get; set; }
-
         public void ConfigureServices( IServiceCollection services )
         {
             services.AddMvc();
@@ -34,11 +34,15 @@
             services.Configure<SteamServiceOptions>( Configuration.GetSubKey( "AppSettings" ) );
             services.AddSingleton( s => Configuration );
             services.AddTransient<IDotaService, DotaService>();
-        }
 
+            services.AddEntityFramework()
+                .AddSqlServer()
+                .AddDbContext<Dota2Db>(
+                    d => { d.UseSqlServer( Configuration["Data:DefaultConnection:ConnectionString"] ); } );
+        }
         public void Configure( IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerfactory )
         {
-            loggerfactory.AddConsole( LogLevel.Verbose );
+            loggerfactory.AddConsole( LogLevel.Information );
 
             if ( env.IsEnvironment( "Development" ) )
             {
