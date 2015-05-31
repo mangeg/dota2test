@@ -191,4 +191,7 @@ ModelManifest.xml
 
 */.vs
 **/wwwroot/lib
+**/wwwroot/app
 artifacts
+**/App/js
+**/App/*.js
