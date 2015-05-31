@@ -1,13 +1,8 @@
-﻿/*
-This file in the main entry point for defining Gulp tasks and using Gulp plugins.
-Click here to learn more. http://go.microsoft.com/fwlink/?LinkId=518007
-*/
-
-var gulp = require( "gulp" ),
+﻿var gulp = require( "gulp" ),
     rimraf = require( "rimraf" ),
-    fs = require( "fs" );
+    fs = require( "fs-extra" );
 
-eval( "var project = " + fs.readFileSync( "./project.json" ) );
+var project = fs.readJSONSync( "./project.json" );
 
 var paths = {
     bower: "./bower_components/",
@@ -21,11 +16,14 @@ gulp.task( "clean", function( cb ) {
 gulp.task( "copy", ["clean"], function() {
     var bower = {
         "bootstrap": "bootstrap/dist/**/*.{js,map,css,ttf,svg,woff,eot}",
-        "jquery": "jquery/dist/jquery*.{js,map}"
+        "jquery": "jquery/dist/jquery*.{js,map}",
+        "angular": "angularjs/angular*.{js,map}"
     };
 
     for( var destDir in bower ) {
-        gulp.src( paths.bower + bower[destDir] )
-            .pipe( gulp.dest( paths.lib + destDir ) );
+        if( bower.hasOwnProperty( destDir ) ) {
+            gulp.src( paths.bower + bower[destDir] )
+                .pipe( gulp.dest( paths.lib + destDir ) );
+        }
     }
 } );

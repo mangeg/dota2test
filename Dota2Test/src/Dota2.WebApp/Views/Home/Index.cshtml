@@ -1,10 +1,7 @@
-﻿@model IEnumerable<Dota2.WebApp.Model.Hero>
-<button type="button" class="btn btn-default" aria-label="Justify Align">
-    <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
-</button>
-
-@foreach ( var hero in Model )
-{
-    <span>@hero.LocalizedName</span>
-    <img src="@hero.ImagePathFullHorizontalPortrait"/>
-}
+﻿<div ng-app>
+    Dota2 Div
+    <label>Name:</label>
+    <input type="text" ng-model="yourName" placeholder="Enter a name here">
+    <hr>
+    <h1>Hello {{yourName}}!</h1>
+</div>

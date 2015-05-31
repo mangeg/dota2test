@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "noImplicitAny": false,
+        "noEmitOnError": false,
+        "removeComments": false,
+        "sourceMap": false,
+        "target": "es3"
+    },
+    "files": [
+        "gulpfile.ts",
+        "./Scripts/app.ts",
+        "./Scripts/file.ts"
+    ]
+}

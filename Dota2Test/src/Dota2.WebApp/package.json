@@ -4,6 +4,9 @@
     "private": true,
     "devDependencies": {
         "gulp": "^3.8.11",
-        "rimraf": "^2.3.3"
+        "gulp-typescript": "^2.7.5",
+        "gulp-inject": "^1.2.0",
+        "fs-extra": "^0.18.4",        
+        "rimraf": "^2.3.3"        
     }
 }
