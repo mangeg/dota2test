@@ -1,7 +1,16 @@
-﻿<div ng-app>
-    Dota2 Div
-    <label>Name:</label>
-    <input type="text" ng-model="yourName" placeholder="Enter a name here">
-    <hr>
-    <h1>Hello {{yourName}}!</h1>
+﻿<div ng-app="dotaApp">
+    <div ng-controller="TestController as test">
+        Dota2 Div
+        <label>Name:</label>
+        <div class="input-group input-group-sm">
+            <span class="input-group-addon">OO</span>
+            <input class="form-control" type="text" placeholder="Enter a name here" ng-model="test.name">
+            <input class="form-control" type="text" placeholder="Enter a name here" ng-model="test.name">
+        </div>
+        
+        <h1>Hello {{test.name}}!</h1>
+    </div>
 </div>
+
+@section scripts
+{}

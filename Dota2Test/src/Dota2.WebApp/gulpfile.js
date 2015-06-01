@@ -12,7 +12,7 @@ var config = new Config();
 var project = fs.readJSONSync( "./project.json" );
 var tsProj = tsc.createProject( {
     target: "ES5",
-    noExternalResolve: true,
+    noExternalResolve: false,
     typescript: typescript,
     declarationFiles: false,
     module: "commonjs"
@@ -28,12 +28,12 @@ gulp.task( "compile-ts", ["clean-ts"], function() {
     var sourceTsFiles = [config.allTs];
 
     var tsResult = gulp.src( sourceTsFiles )
-        .pipe( sourcemaps.init() )
+        //.pipe( sourcemaps.init() )
         .pipe( tsc( tsProj ) );
 
     return merge( [
         tsResult.dts.pipe( gulp.dest( config.tsOutputPath ) ),
-        tsResult.js.pipe( sourcemaps.write( "." ) )
+        tsResult.js//.pipe( sourcemaps.write( "." ) )
         .pipe( gulp.dest( config.tsOutputPath ) )
     ] );
 } );
@@ -71,7 +71,8 @@ gulp.task( "copy", ["clean", "compile-ts", "copy-ts-output"], function() {
     var bower = {
         "bootstrap": "bootstrap/dist/**/*.{js,map,css,ttf,svg,woff,eot}",
         "jquery": "jquery/dist/jquery*.{js,map}",
-        "angular": "angularjs/angular*.{js,map}"
+        "angular": "angularjs/angular*.{js,map}",
+        "require": "requirejs/*.js"
     };
 
     for( var destDir in bower ) {
