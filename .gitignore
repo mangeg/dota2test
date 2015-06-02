@@ -190,8 +190,8 @@ _Pvt_Extensions/
 ModelManifest.xml
 
 **/.vs
-**/wwwroot/lib
-**/wwwroot/app
+**/wwwroot/js/lib
+**/wwwroot/js/app
 artifacts
-**/App/js
 **/App/**/*.js
+**/App/**/*.map

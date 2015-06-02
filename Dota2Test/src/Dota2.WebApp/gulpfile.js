@@ -1,86 +1,89 @@
 ﻿var gulp = require( "gulp" ),
-    fs = require( "fs-extra" ),
     tsc = require( "gulp-typescript" ),
     tslint = require( 'gulp-tslint' ),
     sourcemaps = require( 'gulp-sourcemaps' ),
     clean = require( "gulp-clean" ),
     typescript = require( "typescript" ),
-    merge = require("merge2"),
-    Config = require( "./gulpfile.config" );
+    merge = require( "merge2" ),
+    Config = require( "./gulpfile.config" ),
+    inject = require( "gulp-inject" ),
+    debug = require( "gulp-debug" ),
+    tslint = require( "gulp-tslint" );
 
 var config = new Config();
-var project = fs.readJSONSync( "./project.json" );
 var tsProj = tsc.createProject( {
     target: "ES5",
-    noExternalResolve: false,
+    noExternalResolve: true,
     typescript: typescript,
     declarationFiles: false,
-    module: "commonjs"
+    module: "commonjs",
+    noImplicitAny: true,
+    removeComments: true
 } );
 
-var paths = {
-    bower: "./bower_components/",
-    lib: "./" + project.webroot + "/lib/",
-    app: "./" + project.webroot + "/app/"
-};
+gulp.task( 'gen-ts-refs', function() {
+    var target = gulp.src( config.appTypeDef );
+    var sources = gulp.src( [config.allTs], { read: false } );
+    return target.pipe( inject( sources, {
+        starttag: "//{",
+        endtag: "//}",
+        transform: function( filepath ) {
+            return "/// <reference path=\"../.." + filepath + "\" />";
+        }
+    } ) ).pipe( gulp.dest( config.tsTypings ) );
+} );
 
-gulp.task( "compile-ts", ["clean-ts"], function() {
-    var sourceTsFiles = [config.allTs];
+gulp.task( "compile-ts", function() {
+    var sourceTsFiles = [config.allTs, config.libTypeDefs];
 
     var tsResult = gulp.src( sourceTsFiles )
-        //.pipe( sourcemaps.init() )
+        .pipe( sourcemaps.init() )
         .pipe( tsc( tsProj ) );
-
+    ;
     return merge( [
-        tsResult.dts.pipe( gulp.dest( config.tsOutputPath ) ),
-        tsResult.js//.pipe( sourcemaps.write( "." ) )
-        .pipe( gulp.dest( config.tsOutputPath ) )
-    ] );
+        tsResult.dts.pipe( gulp.dest( config.appTypeDef ) ),
+        tsResult.js.pipe( sourcemaps.write( "." ) )
+        .pipe( gulp.dest( config.jsApp ) )
+    ] ); 
 } );
 
 gulp.task( "clean-ts", function() {
     var typeScriptGenFiles = [
-        config.tsOutputPath,
-        paths.app + "**/*.{js,map}",
-        config.source + "/*.{js,map}"
+        config.jsApp
     ];
 
     return gulp.src( typeScriptGenFiles, { read: false } )
         .pipe( clean() );
 } );
 
-gulp.task( "copy-ts-output", ["compile-ts"], function() {
-    var typeScriptGenFiles = [
-        config.allJs
-    ];
-    return gulp.src( typeScriptGenFiles )
-       .pipe( gulp.dest( paths.app ) );
+gulp.task( 'ts-lint', function() {
+    return gulp.src( config.allTs ).pipe( tslint() ).pipe( tslint.report( "verbose" ) );
 } );
 
 gulp.task( "watch", function() {
-    return gulp.watch( [config.allTs], ["compile-ts", "copy-ts-output"] );
+    return gulp.watch( [config.allTs], ["ts-lint", "compile-ts", "gen-ts-refs"] );
 } );
 
 gulp.task( "clean", function() {
-    var foldersToClean = [paths.lib, paths.app];
+    var foldersToClean = [config.jsLib, config.jsApp];
     return gulp.src( foldersToClean, { read: false } )
         .pipe( clean() );
 } );
 
-gulp.task( "copy", ["clean", "compile-ts", "copy-ts-output"], function() {
+gulp.task( "copy", ["clean"], function() {
     var bower = {
-        "bootstrap": "bootstrap/dist/**/*.{js,map,css,ttf,svg,woff,eot}",
-        "jquery": "jquery/dist/jquery*.{js,map}",
-        "angular": "angularjs/angular*.{js,map}",
-        "require": "requirejs/*.js"
+        "bootstrap": "/bootstrap/dist/**/*.{js,map,css,ttf,svg,woff,eot}",
+        "jquery": "/jquery/dist/jquery*.{js,map}",
+        "angular": "/angularjs/angular*.{js,map}",
+        "require": "/requirejs/*.js"
     };
 
     for( var destDir in bower ) {
         if( bower.hasOwnProperty( destDir ) ) {
-            gulp.src( paths.bower + bower[destDir] )
-                .pipe( gulp.dest( paths.lib + destDir ) );
+            gulp.src( config.bower + bower[destDir] )
+                .pipe( gulp.dest( config.jsLib + "/" + destDir ) );
         }
     }
 } );
 
-gulp.task( "default", ["copy"] );
+gulp.task( "default", ["ts-lint", "compile-ts", "gen-ts-refs", "watch"] );
