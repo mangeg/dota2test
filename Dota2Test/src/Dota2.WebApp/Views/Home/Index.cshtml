@@ -1,20 +1,2 @@
-﻿<div ng-app="dotaApp">
-    <div ng-controller="TestController as test">
-        Dota2 Div
-        <label>Name:</label>
-        <div class="input-group input-group-sm">
-            <span class="input-group-addon">OO</span>
-            <input class="form-control" type="text" placeholder="Enter a name here" ng-model="test.name">
-            <input class="form-control" type="text" placeholder="Enter a name here" ng-model="test.name">
-        </div>
-        <div class="row" ng-repeat="hero in test.heroes">
-            {{hero.LocalizedName}}
-            <img ng-src="{{hero.ImagePathSmallHorizontalPortrait}}"/>
-        </div>
-        
-        <h1>Hello {{test.name}}!</h1>
-    </div>
-</div>
-
-@section scripts
+﻿@section scripts
 {}

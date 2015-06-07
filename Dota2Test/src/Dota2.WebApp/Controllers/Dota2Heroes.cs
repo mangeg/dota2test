@@ -22,7 +22,7 @@ namespace Dota2.WebApp.Controllers
 
         // GET: api/values
         [HttpGet]
-        public IEnumerable<Hero> Get()
+        public IQueryable<Hero> Get()
         {
             if ( !_db.Heroes.Any() )
             {

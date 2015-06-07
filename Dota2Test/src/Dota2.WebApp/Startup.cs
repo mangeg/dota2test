@@ -1,14 +1,17 @@
 ﻿namespace Dota2.WebApp
 {
+    using Microsoft.AspNet.Authorization;
     using Microsoft.AspNet.Builder;
     using Microsoft.AspNet.Diagnostics;
     using Microsoft.AspNet.Diagnostics.Entity;
     using Microsoft.AspNet.Hosting;
+    using Microsoft.AspNet.Mvc;
     using Microsoft.Data.Entity;
     using Microsoft.Framework.ConfigurationModel;
     using Microsoft.Framework.DependencyInjection;
     using Microsoft.Framework.Logging;
     using Model;
+    using Newtonsoft.Json.Serialization;
     using SteamService;
 
     public class Startup
@@ -29,7 +32,11 @@
         public IConfiguration Configuration { get; set; }
         public void ConfigureServices( IServiceCollection services )
         {
-            services.AddMvc();
+            services.AddMvc().Configure<MvcOptions>( o => {
+                var formatter = o.OutputFormatters.InstanceOf<JsonOutputFormatter>();
+                formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            } );
+
             services.Configure<SiteOptions>( Configuration.GetSubKey( "AppSettings" ) );
             services.Configure<SteamServiceOptions>( Configuration.GetSubKey( "AppSettings" ) );
             services.AddSingleton( s => Configuration );
@@ -65,7 +72,6 @@
                         "{controller}/{action}/{id?}",
                         new { controller = "Home", action = "Index" } );
                 } );
-            
         }
     }
 }

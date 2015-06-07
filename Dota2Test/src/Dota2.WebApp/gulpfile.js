@@ -1,14 +1,17 @@
 ﻿var gulp = require( "gulp" ),
     tsc = require( "gulp-typescript" ),
-    tslint = require( 'gulp-tslint' ),
-    sourcemaps = require( 'gulp-sourcemaps' ),
+    tslint = require( "gulp-tslint" ),
+    sourcemaps = require( "gulp-sourcemaps" ),
     clean = require( "gulp-clean" ),
     typescript = require( "typescript" ),
     merge = require( "merge2" ),
     Config = require( "./gulpfile.config" ),
     inject = require( "gulp-inject" ),
     debug = require( "gulp-debug" ),
-    tslint = require( "gulp-tslint" );
+    tslint = require( "gulp-tslint" ),
+    less = require( "gulp-less" ),
+    LessPluginAutoPrefix = require( "less-plugin-autoprefix" ),
+    autoprefix = new LessPluginAutoPrefix( { browsers: ["last 2 versions"] } );
 
 var config = new Config();
 var tsProj = tsc.createProject( {
@@ -20,6 +23,10 @@ var tsProj = tsc.createProject( {
     noImplicitAny: true,
     removeComments: true
 } );
+function logError( error ) {
+    console.log( error );
+    this.emit( 'end' );
+};
 
 gulp.task( 'gen-ts-refs', function() {
     var target = gulp.src( config.appTypeDef );
@@ -60,8 +67,26 @@ gulp.task( 'ts-lint', function() {
     return gulp.src( config.allTs ).pipe( tslint() ).pipe( tslint.report( "verbose" ) );
 } );
 
+gulp.task( "less", function() {
+    gulp.src( config.allLess )
+        .on( "error", logError )
+        //.pipe( sourcemaps.init() )
+        .pipe( less( {
+            plugins: [autoprefix]
+        } ) )
+        .on( "error", logError )
+        //.pipe( less() )
+        //.pipe( sourcemaps.write(".") )
+        .pipe( gulp.dest( config.cssRoot ) )
+        .on( "error", logError );
+} );
+
 gulp.task( "watch", function() {
     return gulp.watch( [config.allTs], ["ts-lint", "compile-ts", "gen-ts-refs"] );
+} );
+
+gulp.task( "watch-less", function() {
+    return gulp.watch( [config.allLess], ["less"] );
 } );
 
 gulp.task( "clean", function() {
@@ -86,4 +111,4 @@ gulp.task( "copy", ["clean"], function() {
     }
 } );
 
-gulp.task( "default", ["ts-lint", "compile-ts", "gen-ts-refs", "watch"] );
+gulp.task( "default", ["ts-lint", "compile-ts", "gen-ts-refs", "watch", "watch-less"] );

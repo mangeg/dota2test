@@ -1,0 +1,9 @@
+body {
+  margin-top: 80px;
+}
+.footer {
+  margin-top: 40px;
+  background-color: #212121;
+  color: white;
+  box-shadow: 0 -10px 10px 5px #212121;
+}
