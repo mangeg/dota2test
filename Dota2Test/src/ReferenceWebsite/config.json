@@ -1,0 +1,10 @@
+{
+  "AppSettings": {
+    "SiteTitle": "ReferenceWebsite"
+  },
+  "Data": {
+    "DefaultConnection": {
+      "ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=aspnet5-ReferenceWebsite-e3a1d857-236f-4888-8413-77e7f24c3b34;Trusted_Connection=True;MultipleActiveResultSets=true"
+    }
+  }
+}

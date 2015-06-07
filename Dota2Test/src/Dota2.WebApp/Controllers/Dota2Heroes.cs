@@ -1,9 +1,8 @@
-﻿ // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+﻿// For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Dota2.WebApp.Controllers
 {
     using System.Linq;
-    using System.Collections.Generic;
     using Microsoft.AspNet.Mvc;
     using Model;
     using SteamService;
@@ -19,7 +18,6 @@ namespace Dota2.WebApp.Controllers
             _dotaService = dotaService;
             _db = db;
         }
-
         // GET: api/values
         [HttpGet]
         public IQueryable<Hero> Get()
@@ -30,8 +28,7 @@ namespace Dota2.WebApp.Controllers
                 foreach ( var hero in heroes )
                 {
                     _db.Heroes.Add(
-                        new Hero
-                        {
+                        new Hero {
                             Id = hero.Id,
                             Name = hero.Name,
                             LocalizedName = hero.LocalizedName

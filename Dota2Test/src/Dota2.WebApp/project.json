@@ -4,19 +4,22 @@
     "userSecretsId": "Dota2.WebSiteSecrets",
 
     "dependencies": {
+        "Dota2.MetaWeblog": "1.0.0-*",
+        "Dota2.SteamService": "1.0.0-*",
+        "Dota2.XmlRpc": "1.0.0-*",
+        "EntityFramework": "7.0.0-beta4",
         "Microsoft.AspNet.Diagnostics": "1.0.0-beta4",
         "Microsoft.AspNet.Diagnostics.Entity": "7.0.0-beta4",
         "Microsoft.AspNet.Mvc": "6.0.0-beta4",
         "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-beta4",
+        "Microsoft.AspNet.Mvc.Xml": "6.0.0-beta4",
         "Microsoft.AspNet.Server.IIS": "1.0.0-beta4",
         "Microsoft.AspNet.Server.WebListener": "1.0.0-beta4",
         "Microsoft.AspNet.StaticFiles": "1.0.0-beta4",
         "Microsoft.Framework.ConfigurationModel.Json": "1.0.0-beta4",
         "Microsoft.Framework.ConfigurationModel.UserSecrets": "1.0.0-beta4",
         "Microsoft.Framework.Logging.Console": "1.0.0-beta4",
-        "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-beta4",
-        "Dota2.SteamService": "",
-        "EntityFramework": "7.0.0-beta4"        
+        "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-beta4"
     },
 
     "commands": {
@@ -43,6 +46,6 @@
 
     "scripts": {
         "prepare": [ "gulp copy" ],
-        "prerestore": [ "npm install", "bower install" ]        
+        "prerestore": [ "npm install", "bower install" ]
     }
 }

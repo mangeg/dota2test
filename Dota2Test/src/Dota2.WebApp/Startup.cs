@@ -1,6 +1,5 @@
 ﻿namespace Dota2.WebApp
 {
-    using Microsoft.AspNet.Authorization;
     using Microsoft.AspNet.Builder;
     using Microsoft.AspNet.Diagnostics;
     using Microsoft.AspNet.Diagnostics.Entity;
@@ -13,6 +12,7 @@
     using Model;
     using Newtonsoft.Json.Serialization;
     using SteamService;
+    using XmlRpc;
 
     public class Startup
     {
@@ -32,25 +32,33 @@
         public IConfiguration Configuration { get; set; }
         public void ConfigureServices( IServiceCollection services )
         {
-            services.AddMvc().Configure<MvcOptions>( o => {
-                var formatter = o.OutputFormatters.InstanceOf<JsonOutputFormatter>();
-                formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            } );
-
-            services.Configure<SiteOptions>( Configuration.GetSubKey( "AppSettings" ) );
-            services.Configure<SteamServiceOptions>( Configuration.GetSubKey( "AppSettings" ) );
             services.AddSingleton( s => Configuration );
-            services.AddTransient<IDotaService, DotaService>();
+
+            services.AddMvc().Configure<MvcOptions>(
+                options =>
+                {
+                    var jsonOutFormatter = options.OutputFormatters.InstanceOf<JsonOutputFormatter>();
+                    jsonOutFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    
+                } );
+
+            //services.AddTransient<IActionSelector, XmlRpcSelector>();
+            services.AddXmlRpc();
 
             services.AddEntityFramework()
                 .AddSqlServer()
                 .AddDbContext<Dota2Db>(
                     d => { d.UseSqlServer( Configuration["Data:DefaultConnection:ConnectionString"] ); } );
+
+            services.Configure<SiteOptions>( Configuration.GetSubKey( "AppSettings" ) );
+            services.Configure<SteamServiceOptions>( Configuration.GetSubKey( "AppSettings" ) );
+            services.AddTransient<IDotaService, DotaService>();
         }
+
         public void Configure( IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerfactory )
         {
-            loggerfactory.AddConsole( LogLevel.Information );
-
+            loggerfactory.AddConsole( LogLevel.Verbose );
+            
             if ( env.IsEnvironment( "Development" ) )
             {
                 app.UseBrowserLink();
@@ -71,6 +79,7 @@
                         "default",
                         "{controller}/{action}/{id?}",
                         new { controller = "Home", action = "Index" } );
+                    
                 } );
         }
     }
