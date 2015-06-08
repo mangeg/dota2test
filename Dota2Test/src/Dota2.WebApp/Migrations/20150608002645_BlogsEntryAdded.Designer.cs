@@ -8,9 +8,19 @@ using Dota2.WebApp.Model;
 namespace Dota2.WebApp.Migrations
 {
     [ContextType(typeof(Dota2Db))]
-    partial class Dota2DbModelSnapshot : ModelSnapshot
+    partial class BlogsEntryAdded
     {
-        public override IModel Model
+        public override string Id
+        {
+            get { return "20150608002645_BlogsEntryAdded"; }
+        }
+        
+        public override string ProductVersion
+        {
+            get { return "7.0.0-beta4-12943"; }
+        }
+        
+        public override IModel Target
         {
             get
             {

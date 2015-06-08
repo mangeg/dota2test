@@ -2,13 +2,21 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using MetaWeblog;
     using Microsoft.AspNet.Mvc;
+    using Model;
     using XmlRpc;
 
     [Route( "/api/blog" )]
     public class BlogController : Controller
     {
+        private readonly Dota2Db _db;
+        public BlogController( Dota2Db db )
+        {
+            _db = db;
+        }
+
         [HttpPost]
         public IActionResult EditPost( string postid, string username, string password, Post post, bool publish )
         {
@@ -61,14 +69,12 @@
         [HttpPost]
         public IActionResult GetUsersBlogs( string key, string username, string password )
         {
-            var ret = new List<BlogInfo>();
-            ret.Add(
-                new BlogInfo
-                {
-                    blogName = "asfa",
-                    blogid = "asfs",
-                    url = ""
-                } );
+            var ret = _db.Blogs.Select( blog => new BlogInfo
+            {
+                url = blog.Url,
+                blogid = blog.Id.ToString( "N" ),
+                blogName = blog.Name
+            } );
 
             return new XmlRpcResult( ret.ToArray() );
         }

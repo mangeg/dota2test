@@ -57,7 +57,7 @@
 
         public void Configure( IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerfactory )
         {
-            loggerfactory.AddConsole( LogLevel.Verbose );
+            loggerfactory.AddConsole( LogLevel.Information );
             
             if ( env.IsEnvironment( "Development" ) )
             {

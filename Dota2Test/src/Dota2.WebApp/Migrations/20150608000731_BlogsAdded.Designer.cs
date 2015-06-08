@@ -8,9 +8,19 @@ using Dota2.WebApp.Model;
 namespace Dota2.WebApp.Migrations
 {
     [ContextType(typeof(Dota2Db))]
-    partial class Dota2DbModelSnapshot : ModelSnapshot
+    partial class BlogsAdded
     {
-        public override IModel Model
+        public override string Id
+        {
+            get { return "20150608000731_BlogsAdded"; }
+        }
+        
+        public override string ProductVersion
+        {
+            get { return "7.0.0-beta4-12943"; }
+        }
+        
+        public override IModel Target
         {
             get
             {
@@ -64,17 +74,6 @@ namespace Dota2.WebApp.Migrations
                             .Annotation("OriginalValueIndex", 1);
                         b.Property<string>("Url")
                             .Annotation("OriginalValueIndex", 2);
-                        b.Key("Id");
-                    });
-                
-                builder.Entity("Dota2.WebApp.Model.BlogEntry", b =>
-                    {
-                        b.Property<Guid>("BlogId")
-                            .Annotation("OriginalValueIndex", 0);
-                        b.Property<int>("Id")
-                            .GenerateValueOnAdd()
-                            .Annotation("OriginalValueIndex", 1)
-                            .Annotation("SqlServer:ValueGeneration", "Default");
                         b.Key("Id");
                     });
                 
@@ -163,11 +162,6 @@ namespace Dota2.WebApp.Migrations
                             .Annotation("OriginalValueIndex", 1);
                         b.Key("UserId", "RoleId");
                         b.Annotation("Relational:TableName", "AspNetUserRoles");
-                    });
-                
-                builder.Entity("Dota2.WebApp.Model.BlogEntry", b =>
-                    {
-                        b.ForeignKey("Dota2.WebApp.Model.Blog", "BlogId");
                     });
                 
                 builder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRoleClaim`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]", b =>
