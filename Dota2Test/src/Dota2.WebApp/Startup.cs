@@ -42,7 +42,6 @@
                     
                 } );
 
-            //services.AddTransient<IActionSelector, XmlRpcSelector>();
             services.AddXmlRpc();
 
             services.AddEntityFramework()
